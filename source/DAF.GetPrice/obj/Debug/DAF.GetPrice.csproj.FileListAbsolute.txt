@@ -7,6 +7,3 @@ C:\Projects\Others\DAF.GetPrice\DAF.GetPrice\bin\Debug\HtmlAgilityPack.xml
 C:\Projects\Others\DAF.GetPrice\DAF.GetPrice\obj\Debug\DAF.GetPrice.csprojResolveAssemblyReference.cache
 C:\Projects\Others\DAF.GetPrice\DAF.GetPrice\obj\Debug\DAF.GetPrice.exe
 C:\Projects\Others\DAF.GetPrice\DAF.GetPrice\obj\Debug\DAF.GetPrice.pdb
-C:\Projects\GitHub\GPOP\source\DAF.GetPrice\bin\Debug\DAF.GetPrice.exe.config
-C:\Projects\GitHub\GPOP\source\DAF.GetPrice\obj\Debug\DAF.GetPrice.exe
-C:\Projects\GitHub\GPOP\source\DAF.GetPrice\obj\Debug\DAF.GetPrice.pdb

@@ -45,9 +45,8 @@ namespace DAF.GetPrice
                 StoreName = "Magazine Luiza",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
                 URL = "http://www.magazineluiza.com.br/iphone-se-apple-64gb-cinza-espacial-4g-tela-4-retina-cam.-12mp-ios-9-proc.-chip-a9-touch-id/p/2162213/te/ipse/",
-                //< span class="right-price">
-                Pattern = "<span class=\"right-price\">(.*?)<\\/span>"
-                //Pattern = "<strong class=\"js-price-value\">(.*?)<\\/strong>"
+                //Pattern = "<span class=\"right-price\">(.*?)<\\/span>"
+                Pattern = "<strong class=\"js-price-value\">(.*?)<\\/strong>"
             });
 
             sites.Add(new Item()
@@ -63,7 +62,7 @@ namespace DAF.GetPrice
                 StoreName = "Casas bahia",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
                 URL = "http://www.casasbahia.com.br/TelefoneseCelulares/Smartphones/iOSiPhone/iPhone-SE-Apple-com-64GB-Tela-4-iOS-9-Sensor-de-Impressao-Digital-Camera-iSight-12MP-Wi-Fi-3G-4G-GPS-MP3-Bluetooth-e-NFC-Cinza-Espacial-7990221.html",
-                Pattern = "<span class=\"card-price\">(.*?)<\\/span>"
+                Pattern = "<i class=\"sale price\">(.*?)<\\/i>"
             });
 
             sites.Add(new Item()
@@ -71,7 +70,7 @@ namespace DAF.GetPrice
                 StoreName = "Pontofrio",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
                 URL = "http://www.pontofrio.com.br/TelefoneseCelulares/Smartphones/iOSiPhone/iPhone-SE-Apple-com-64GB-Tela-4-iOS-9-Sensor-de-Impressao-Digital-Camera-iSight-12MP-Wi-Fi-3G-4G-GPS-MP3-Bluetooth-e-NFC-Cinza-Espacial-7990221.html",
-                Pattern = "<span class=\"card-price\">(.*?)<\\/span>"
+                Pattern = "<i class=\"sale price\">(.*?)<\\/i>"
             });
 
             sites.Add(new Item()
