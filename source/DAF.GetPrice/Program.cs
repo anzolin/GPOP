@@ -111,22 +111,23 @@ namespace DAF.GetPrice
 
             }
         }
-        
+
         static void SendEmail(EMailData emailData)
         {
             var smtpClient = new SmtpClient
             {
                 Host = "smtp.gmail.com",
-                Port = 587,
+                Port = 465,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("MAIL", "PASSWORD"),
+                Credentials = new NetworkCredential("<USER>@gmail.com", "<PASSWORD>"),
+                Timeout = 50000
             };
 
-            var mail = new MailMessage { From = new MailAddress("MAIL", "GPoP") };
+            var mail = new MailMessage { From = new MailAddress("<USER>@gmail.com", "GPoP") };
 
-            mail.To.Add(new MailAddress("MAIL"));
+            mail.To.Add(new MailAddress("<USER>@gmail.com"));
             mail.Subject = emailData.Subject;
             mail.IsBodyHtml = true;
             mail.Body = emailData.Body;
