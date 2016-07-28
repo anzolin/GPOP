@@ -1,0 +1,10 @@
+D:\Projetos\Console\DiegoEmail\DiegoEmail.Lib\bin\Debug\DiegoEmail.Lib.dll
+D:\Projetos\Console\DiegoEmail\DiegoEmail.Lib\bin\Debug\DiegoEmail.Lib.pdb
+D:\Projetos\Console\DiegoEmail\DiegoEmail.Lib\obj\Debug\DiegoEmail.Lib.dll
+D:\Projetos\Console\DiegoEmail\DiegoEmail.Lib\obj\Debug\DiegoEmail.Lib.pdb
+D:\Projetos\Console\DiegoEmail\DiegoEmail.Lib\obj\Debug\DiegoEmail.Lib.csprojResolveAssemblyReference.cache
+C:\Projects\GitHub\GPOP\source\DiegoEmail.Lib\bin\Debug\DiegoEmail.Lib.dll
+C:\Projects\GitHub\GPOP\source\DiegoEmail.Lib\bin\Debug\DiegoEmail.Lib.pdb
+C:\Projects\GitHub\GPOP\source\DiegoEmail.Lib\obj\Debug\DiegoEmail.Lib.csprojResolveAssemblyReference.cache
+C:\Projects\GitHub\GPOP\source\DiegoEmail.Lib\obj\Debug\DiegoEmail.Lib.dll
+C:\Projects\GitHub\GPOP\source\DiegoEmail.Lib\obj\Debug\DiegoEmail.Lib.pdb

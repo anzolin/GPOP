@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+ Parâmetros:
+  <%PRM_ASSUNTO%>
+  <%PRM_DATAHORA%>
+  <%PRM_TEXTO%>
+-->
+<EMailData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Subject>
+    <![CDATA[<%PRM_ASSUNTO%>]]>
+  </Subject>
+  <Body>
+    <![CDATA[
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aaa;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aaa;color:#fff;background-color:#f38630;border-top-width:1px;border-bottom-width:1px;}
+.tg .tg-c9cr{font-style:italic}
+.tg .tg-e3zv{font-weight:bold}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-e3zv" colspan="2"><%PRM_ASSUNTO%></th>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Data/Hora:</td>
+    <td class="tg-c9cr"><%PRM_DATAHORA%></td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Texto:</td>
+    <td class="tg-c9cr"><%PRM_TEXTO%></td>
+  </tr>
+</table>
+    ]]>
+  </Body>
+</EMailData>

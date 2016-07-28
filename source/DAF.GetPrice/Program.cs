@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Net.Security;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 
 namespace DAF.GetPrice
@@ -81,64 +82,132 @@ namespace DAF.GetPrice
                 Pattern = "<span class=\"price\">(.*?)<\\/span>"
             });
 
-            Console.WriteLine("Start");
-            Run2(sites);
-            Console.WriteLine("Finish");
+            Execute(sites);
             Console.ReadLine();
         }
 
-        static void Run2(List<Item> sites)
+        static void PrepareEmail(string text)
         {
-            foreach (var i in sites)
-            {
-                Console.WriteLine();
-                Console.WriteLine("------------------------------");
-                Console.WriteLine("StoreName:  {0}", i.StoreName);
-                Console.WriteLine("ProductName:  {0}", i.ProductName);
+            var dtNow = DateTime.Now;
 
-                try
-                {
-                    var request = (HttpWebRequest)WebRequest.Create(i.URL);
-                    var response = (HttpWebResponse)request.GetResponse();
-
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var receiveStream = response.GetResponseStream();
-                        StreamReader readStream = null;
-
-                        if (response.CharacterSet == null)
-                            readStream = new StreamReader(receiveStream);
-                        else
-                            readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-
-                        string data = readStream.ReadToEnd();
-
-                        var matches = Regex.Matches(data, i.Pattern);
-                        Console.WriteLine("Matches found: {0}", matches.Count);
-
-                        if (matches.Count > 0)
+            var paramList = new List<Tuple<string, string>>
                         {
-                            Console.WriteLine();
+                            new Tuple<string, string>("PRM_ASSUNTO", "GPoP"),
+                            new Tuple<string, string>("PRM_DATAHORA", string.Format("{0} {1}", dtNow.ToShortDateString(), dtNow.ToShortTimeString())),
+                            new Tuple<string, string>("PRM_TEXTO", text)
+                        };
 
-                            foreach (Match m in matches)
-                                Console.WriteLine("Inner DIV: {0}", m.Groups[1]);
-                        }
+            var emailTemplate = "DAF.GetPrice.Template.Teste.xml";
+            var templateStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(emailTemplate);
 
-                        response.Close();
-                        readStream.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine(ex);
-                }
-                finally
-                {
+            var emailData = EmailHelper.GetEMailData(templateStream, paramList.ToArray());
 
-                }
+            try
+            {
+                SendEmail(emailData);
+            }
+            catch (System.Net.Mail.SmtpFailedRecipientException ex)
+            {
 
-                Console.WriteLine("------------------------------");
+            }
+        }
+        
+        static void SendEmail(EMailData emailData)
+        {
+            var smtpClient = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("MAIL", "PASSWORD"),
+            };
+
+            var mail = new MailMessage { From = new MailAddress("MAIL", "GPoP") };
+
+            mail.To.Add(new MailAddress("MAIL"));
+            mail.Subject = emailData.Subject;
+            mail.IsBodyHtml = true;
+            mail.Body = emailData.Body;
+
+            ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+
+            smtpClient.Send(mail);
+        }
+
+        static void Execute(List<Item> sites)
+        {
+            while (true)
+            {
+                var dtNow = DateTime.Now;
                 Console.WriteLine();
+                Console.WriteLine(" --- Started at {0} {1} ---", dtNow.ToShortDateString(), dtNow.ToShortTimeString());
+                Console.WriteLine();
+
+                foreach (var i in sites)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("------------------------------");
+                    Console.WriteLine("StoreName:  {0}", i.StoreName);
+                    Console.WriteLine("ProductName:  {0}", i.ProductName);
+
+                    try
+                    {
+                        var request = (HttpWebRequest)WebRequest.Create(i.URL);
+                        var response = (HttpWebResponse)request.GetResponse();
+
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            var receiveStream = response.GetResponseStream();
+                            StreamReader readStream = null;
+
+                            if (response.CharacterSet == null)
+                                readStream = new StreamReader(receiveStream);
+                            else
+                                readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+
+                            string data = readStream.ReadToEnd();
+
+                            var matches = Regex.Matches(data, i.Pattern);
+                            Console.WriteLine("Matches found: {0}", matches.Count);
+
+                            if (matches.Count > 0)
+                            {
+                                Console.WriteLine();
+
+                                foreach (Match m in matches)
+                                {
+                                    Console.WriteLine("Inner DIV: {0}", m.Groups[1]);
+                                    PrepareEmail(m.Groups[1].Value);
+                                }
+                            }
+
+                            response.Close();
+                            readStream.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine(ex);
+                    }
+                    finally
+                    {
+
+                    }
+
+                    Console.WriteLine("------------------------------");
+                    Console.WriteLine();
+                }
+
+                dtNow = DateTime.Now;
+                Console.WriteLine();
+                Console.WriteLine(" --- Finished at {0} {1} ---", dtNow.ToShortDateString(), dtNow.ToShortTimeString());
+                Console.WriteLine();
+                Console.WriteLine(" --- Waiting 10 minutes ---");
+                Console.WriteLine();
+                System.Threading.Thread.Sleep(600000); // 10 minutes - 600000
+                //System.Threading.Thread.Sleep(1800000); // 30 minutes - 1800000
             }
         }
     }
