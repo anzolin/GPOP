@@ -27,18 +27,26 @@ namespace DAF.GetPrice
 
             sites.Add(new Item()
             {
-                StoreName = "Walmart",
-                ProductName = "Fone de Ouvido Sony Estéreo Intra-auricular MDR-EX15LP",
-                URL = "https://www.walmart.com.br/produto/3079697/pr",
-                Pattern = "<span class=\"payment-price\">(.*?)<\\/span>"
-            });
-
-            sites.Add(new Item()
-            {
                 StoreName = "Submarino",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
                 URL = "http://www.submarino.com.br/produto/126546738/iphone-se-64gb-cinza-desbloqueado-ios-3g-4g-wi-fi-camera-12mp-apple",
                 Pattern = "<span class=\"card-price\">(.*?)<\\/span>"
+            });
+
+            sites.Add(new Item()
+            {
+                StoreName = "Americanas",
+                ProductName = "iPhone SE 64GB Cinza Espacial",
+                URL = "http://www.americanas.com.br/produto/126546738/iphone-se-64gb-cinza-desbloqueado-ios-3g-4g-wi-fi-camera-12mp-apple",
+                Pattern = "<span itemprop=\"price/salesPrice\">(.*?)<\\/span>"
+            });
+
+            sites.Add(new Item()
+            {
+                StoreName = "Saraiva",
+                ProductName = "iPhone SE 64GB Cinza Espacial",
+                URL = "http://www.saraiva.com.br/iphone-se-64gb-cinza-espacial-apple-9320591.html",
+                Pattern = "<span class=\"final-price\">(.*?)<\\/span>"
             });
 
             sites.Add(new Item()
@@ -54,7 +62,7 @@ namespace DAF.GetPrice
             {
                 StoreName = "Fast Shop",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
-                URL = "http://www.fastshop.com.br/loja/apple-iphone-ipad-ipod/apple-iphone-se/iphone-se-cinza-espacial-64gb-mlm62bz-a-fast",
+                URL = "http://www.fastshop.com.br/loja/celular-e-telefone/smartphone/iphone/iphone-se-cinza-espacial-64gb-mlm62bz-a-fast?cm_re=FASTSHOP%3aSub-departamento%3aiPhone-_-Vitrine+24-_-AEMLM62BZACNZ",
                 Pattern = "<span id=\"bestPhonePrice\">(.*?)<\\/span>"
             });
 
@@ -79,7 +87,7 @@ namespace DAF.GetPrice
                 StoreName = "Girafa",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
                 URL = "http://www.girafa.com.br/Telefonia/apple/iphone-apple-cinza-espacial-64gb-ios-9-a9-c-mera-12mp-e-touch-id.htm",
-                Pattern = "<span class=\"price\">(.*?)<\\/span>"
+                Pattern = "<strong itemprop=\"price\">(.*?)<\\/strong>"
             });
 
             Execute(sites);
@@ -104,7 +112,7 @@ namespace DAF.GetPrice
 
             try
             {
-                SendEmail(emailData);
+                //SendEmail(emailData);
             }
             catch (System.Net.Mail.SmtpFailedRecipientException ex)
             {
@@ -117,22 +125,22 @@ namespace DAF.GetPrice
             var smtpClient = new SmtpClient
             {
                 Host = "smtp.gmail.com",
-                Port = 465,
+                Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("<USER>@gmail.com", "<PASSWORD>"),
-                Timeout = 50000
+                Credentials = new NetworkCredential("", ""),
+                Timeout = 30000
             };
 
-            var mail = new MailMessage { From = new MailAddress("<USER>@gmail.com", "GPoP") };
+            var mail = new MailMessage { From = new MailAddress("") };
 
-            mail.To.Add(new MailAddress("<USER>@gmail.com"));
+            mail.To.Add(new MailAddress(""));
             mail.Subject = emailData.Subject;
             mail.IsBodyHtml = true;
             mail.Body = emailData.Body;
 
-            ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+            //ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
             smtpClient.Send(mail);
         }
@@ -156,6 +164,7 @@ namespace DAF.GetPrice
                     try
                     {
                         var request = (HttpWebRequest)WebRequest.Create(i.URL);
+                        request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
                         var response = (HttpWebResponse)request.GetResponse();
 
                         if (response.StatusCode == HttpStatusCode.OK)
@@ -179,7 +188,10 @@ namespace DAF.GetPrice
 
                                 foreach (Match m in matches)
                                 {
+                                    //Console.BackgroundColor = ConsoleColor.Blue;
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine("Inner DIV: {0}", m.Groups[1]);
+                                    Console.ResetColor();
                                     PrepareEmail(m.Groups[1].Value);
                                 }
                             }
