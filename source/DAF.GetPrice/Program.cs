@@ -28,6 +28,14 @@ namespace DAF.GetPrice
             sites.Add(new Item()
             {
                 StoreName = "Submarino",
+                ProductName = "iPhone 6s 64GB Cinza Espacial",
+                URL = "http://www.submarino.com.br/produto/127344759/iphone-6s-64gb-cinza-espacial-desbloqueado-ios9-3g-4g-camera-12mp-apple",
+                Pattern = "<span class=\"card-price\">(.*?)<\\/span>"
+            });
+
+            sites.Add(new Item()
+            {
+                StoreName = "Submarino",
                 ProductName = "iPhone SE 64GB Cinza Espacial",
                 URL = "http://www.submarino.com.br/produto/126546738/iphone-se-64gb-cinza-desbloqueado-ios-3g-4g-wi-fi-camera-12mp-apple",
                 Pattern = "<span class=\"card-price\">(.*?)<\\/span>"
